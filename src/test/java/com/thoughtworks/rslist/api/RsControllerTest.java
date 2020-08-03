@@ -19,9 +19,22 @@ class RsControllerTest {
     MockMvc mockMvc;
 
     @Test
-    void shouldGetRsList() throws Exception {
+    void shouldGetRsEventList() throws Exception {
         mockMvc.perform(get("/rs/list"))
                 .andExpect(content().string("[第一条事件, 第二条事件, 第三条事件]"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldGetOneRsEvent() throws Exception {
+        mockMvc.perform(get("/rs/1"))
+                .andExpect(content().string("第一条事件"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/rs/2"))
+                .andExpect(content().string("第二条事件"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/rs/3"))
+                .andExpect(content().string("第三条事件"))
                 .andExpect(status().isOk());
     }
 }
