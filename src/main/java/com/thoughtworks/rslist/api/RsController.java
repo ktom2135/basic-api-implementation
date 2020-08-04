@@ -22,7 +22,7 @@ public class RsController {
     private List<RsEvent> rsList = initRsEvent();
 
     private List<RsEvent> initRsEvent() {
-        User user = new User("alibaba","male", 20,"a@b.com","11234567890");
+        User user = new User("alibaba", "male", 20, "a@b.com", "11234567890");
         List<RsEvent> initList = new ArrayList<>();
         initList.add(new RsEvent("第一条事件", "无分类", user));
         initList.add(new RsEvent("第二条事件", "无分类", user));
@@ -32,17 +32,17 @@ public class RsController {
     }
 
     @GetMapping("/rs/list")
-    public List<RsEvent> getRsEventBetween(@RequestParam(required = false) Integer start,
-                                           @RequestParam(required = false) Integer end) {
+    public ResponseEntity<List<RsEvent>> getRsEventBetween(@RequestParam(required = false) Integer start,
+                                                           @RequestParam(required = false) Integer end) {
         if (start == null || end == null) {
-            return rsList;
+            return ResponseEntity.ok(rsList);
         }
-        return rsList.subList(start - 1, end);
+        return ResponseEntity.ok(rsList.subList(start - 1, end));
     }
 
     @GetMapping("/rs/{index}")
-    public RsEvent getOneRsEvent(@PathVariable int index) {
-        return rsList.get(index - 1);
+    public ResponseEntity<RsEvent> getOneRsEvent(@PathVariable int index) {
+        return ResponseEntity.ok(rsList.get(index - 1));
     }
 
     @PostMapping("/rs/event")
