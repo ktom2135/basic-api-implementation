@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,12 +80,7 @@ class RsControllerTest {
 
     @Test
     void shouldAddRsEvent() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User("Alibaba", "male", 20, "ab.com", "11234567890");
-
-        RsEvent rsEvent = new RsEvent("第四条事件", "无分类", user);
-        String rsEventJson = objectMapper.writeValueAsString(rsEvent);
-
+        String rsEventJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Alibaba\",\"gender\":\"male\",\"age\":20,\"email\":\"ab.com\",\"phone\":\"11234567890\",\"vote\":10}}";
         mockMvc.perform(post("/rs/event").content(rsEventJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
