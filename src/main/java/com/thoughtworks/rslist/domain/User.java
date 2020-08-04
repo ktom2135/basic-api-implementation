@@ -1,10 +1,12 @@
 package com.thoughtworks.rslist.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
 @Data
+@NoArgsConstructor
 public class User {
 
     @NotNull

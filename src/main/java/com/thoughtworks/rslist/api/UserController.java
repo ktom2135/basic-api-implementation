@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    public static List<User> userList = new ArrayList<>();
+    public static List<User> users = new ArrayList<>();
 
     @PostMapping("/user")
     public void register(@RequestBody @Valid User user){
-        userList.add(user);
+        users.add(user);
     }
 
 }
