@@ -97,4 +97,11 @@ class RsControllerTest {
                 .andExpect(jsonPath("$[3].keyWord", is("无分类")));
 
     }
+
+    @Test
+    void  shouldGet400WhenIndexInvalid() throws Exception {
+        mockMvc.perform(get("/rs/10"))
+                .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error", is("index is invalid")));
+    }
 }
