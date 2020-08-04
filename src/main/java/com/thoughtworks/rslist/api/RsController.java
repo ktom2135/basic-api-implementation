@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.RsEvent;
 import com.thoughtworks.rslist.domain.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.RowSetEvent;
@@ -45,10 +46,10 @@ public class RsController {
     }
 
     @PostMapping("/rs/event")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void addOneRsEvent(@RequestBody String rsEventString) throws JsonProcessingException {
+    public ResponseEntity addOneRsEvent(@RequestBody String rsEventString) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         RsEvent rsEvent = objectMapper.readValue(rsEventString, RsEvent.class);
         rsList.add(rsEvent);
+        return ResponseEntity.created(null).build();
     }
 }
