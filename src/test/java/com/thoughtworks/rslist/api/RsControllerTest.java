@@ -2,6 +2,7 @@ package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.RsEvent;
+import com.thoughtworks.rslist.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -83,23 +85,23 @@ class RsControllerTest {
 
     @Test
     void shouldAddOneRsEvent() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        RsEvent rsEvent = new RsEvent("第四条事件", "无分类");
-
-        String requestJson = objectMapper.writeValueAsString(rsEvent);
-
+        String requestJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Tom\",\"gender\":\"male\",\"age\":20,\"email\":\"a@b.com\",\"phone\":\"11234567890\",\"vote\":10}}";
         mockMvc.perform(post("/rs/event").content(requestJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(jsonPath("$[0].eventName", is("第一条事件")))
                 .andExpect(jsonPath("$[0].keyWord", is("无分类")))
+                .andExpect(jsonPath("$[0]", hasKey("user")))
                 .andExpect(jsonPath("$[1].eventName", is("第二条事件")))
                 .andExpect(jsonPath("$[1].keyWord", is("无分类")))
+                .andExpect(jsonPath("$[1]", hasKey("user")))
                 .andExpect(jsonPath("$[2].eventName", is("第三条事件")))
                 .andExpect(jsonPath("$[2].keyWord", is("无分类")))
+                .andExpect(jsonPath("$[2]", hasKey("user")))
                 .andExpect(jsonPath("$[3].eventName", is("第四条事件")))
                 .andExpect(jsonPath("$[3].keyWord", is("无分类")))
+                .andExpect(jsonPath("$[3]", hasKey("user")))
                 .andExpect(status().isOk());
     }
 }
