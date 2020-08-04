@@ -7,9 +7,11 @@ import com.thoughtworks.rslist.exception.CommentError;
 import com.thoughtworks.rslist.exception.IndexInvalidException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class RsController {
 
     @GetMapping("/rs/{index}")
     public ResponseEntity<RsEvent> getOneRsEvent(@PathVariable int index) throws IndexInvalidException {
-        if(index < 0 || index > rsList.size()){
+        if (index < 0 || index > rsList.size()) {
             throw new IndexInvalidException("index is invalid");
         }
         return ResponseEntity.ok(rsList.get(index - 1));
@@ -53,9 +55,6 @@ public class RsController {
         return ResponseEntity.created(null).build();
     }
 
-    @ExceptionHandler(IndexInvalidException.class)
-    public ResponseEntity handleException(IndexInvalidException ex){
-        CommentError commentError = new CommentError(ex.getMessage());
-        return ResponseEntity.badRequest().body(commentError);
-    }
+
+
 }

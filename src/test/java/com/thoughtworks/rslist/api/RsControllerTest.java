@@ -99,9 +99,18 @@ class RsControllerTest {
     }
 
     @Test
-    void  shouldGet400WhenIndexInvalid() throws Exception {
+    void shouldGet400WhenIndexInvalid() throws Exception {
         mockMvc.perform(get("/rs/10"))
                 .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.error", is("index is invalid")));
+                .andExpect(jsonPath("$.error", is("index is invalid")));
+    }
+
+    @Test
+    void shouldGet400WhenRsEventIsInvalid() throws Exception {
+        String rsEventJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Alibaba123\",\"gender\":\"male\",\"age\":20,\"email\":\"ab.com\",\"phone\":\"11234567890\",\"vote\":10}}";
+        mockMvc.perform(post("/rs/event").content(rsEventJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
+
     }
 }
