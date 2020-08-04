@@ -1,23 +1,20 @@
 package com.thoughtworks.rslist.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.RsEvent;
 import com.thoughtworks.rslist.domain.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.RowSetEvent;
+import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.thoughtworks.rslist.api.UserController.users;
 
 @RestController
+@Validated
 public class RsController {
     private List<RsEvent> rsList = initRsEvent();
 
@@ -46,9 +43,7 @@ public class RsController {
     }
 
     @PostMapping("/rs/event")
-    public ResponseEntity addOneRsEvent(@RequestBody String rsEventString) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        RsEvent rsEvent = objectMapper.readValue(rsEventString, RsEvent.class);
+    public ResponseEntity addOneRsEvent(@RequestBody @Valid RsEvent rsEvent) throws JsonProcessingException {
         rsList.add(rsEvent);
         return ResponseEntity.created(null).build();
     }
