@@ -4,10 +4,8 @@ public class RsEvent {
 
     private String eventName;
     private String keyWord;
-    private String testProp;
 
     public RsEvent(){
-        int a = 0;
     }
 
     public RsEvent(String eventName, String  keyWord){
@@ -29,9 +27,5 @@ public class RsEvent {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
-    }
-
-    public void convert(){
-
     }
 }

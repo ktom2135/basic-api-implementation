@@ -84,8 +84,6 @@ class RsControllerTest {
     @Test
     void shouldAddOneRsEvent() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-
-
         RsEvent rsEvent = new RsEvent("第四条事件", "无分类");
 
         String requestJson = objectMapper.writeValueAsString(rsEvent);
