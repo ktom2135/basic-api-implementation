@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.RsEvent;
 import com.thoughtworks.rslist.domain.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class RsController {
     }
 
     @PostMapping("/rs/event")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public void addOneRsEvent(@RequestBody @Valid RsEvent rsEvent) throws JsonProcessingException {
         rsList.add(rsEvent);
     }

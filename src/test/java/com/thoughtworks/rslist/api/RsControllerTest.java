@@ -87,7 +87,7 @@ class RsControllerTest {
     void shouldAddOneRsEvent() throws Exception {
         String requestJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Tom\",\"gender\":\"male\",\"age\":20,\"email\":\"a@b.com\",\"phone\":\"11234567890\",\"vote\":10}}";
         mockMvc.perform(post("/rs/event").content(requestJson).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(get("/rs/list"))
                 .andExpect(jsonPath("$[0].eventName", is("第一条事件")))
