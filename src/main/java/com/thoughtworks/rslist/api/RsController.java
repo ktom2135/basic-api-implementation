@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.RsEvent;
 import com.thoughtworks.rslist.domain.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class RsController {
 
     private List<RsEvent> initRsEvent() {
         List<RsEvent> result = new ArrayList<>();
-        User user = new User("Tom", "male", 18,"a@b.com", "11234567890");
+        User user = new User("Tom", "male", 18, "a@b.com", "11234567890");
 
         result.add(new RsEvent("第一条事件", "无分类", user));
         result.add(new RsEvent("第二条事件", "无分类", user));
@@ -32,23 +33,24 @@ public class RsController {
     }
 
     @GetMapping("/rs/list")
-    public List<RsEvent> getRsEventBetween(@RequestParam(required = false) Integer start,
+    public ResponseEntity<List<RsEvent>> getRsEventBetween(@RequestParam(required = false) Integer start,
                                            @RequestParam(required = false) Integer end) {
         if (start == null || end == null) {
-            return rsList;
+
+            return ResponseEntity.ok(rsList);
         }
 
-        return rsList.subList(start - 1, end);
+        return ResponseEntity.ok(rsList.subList(start - 1, end));
     }
 
     @GetMapping("/rs/{index}")
-    public RsEvent getOneRsEvent(@PathVariable int index) {
-        return rsList.get(index - 1);
+    public ResponseEntity<RsEvent> getOneRsEvent(@PathVariable int index) {
+        return ResponseEntity.ok(rsList.get(index - 1));
     }
 
     @PostMapping("/rs/event")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void addOneRsEvent(@RequestBody @Valid RsEvent rsEvent) throws JsonProcessingException {
+    public ResponseEntity addOneRsEvent(@RequestBody @Valid RsEvent rsEvent) throws JsonProcessingException {
         rsList.add(rsEvent);
+        return ResponseEntity.created(null).build();
     }
 }
