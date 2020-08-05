@@ -40,11 +40,7 @@ public class RsController {
     }
 
     @PostMapping("/rs/event")
-    public void addOneRsEvent(@RequestBody String rsEventString) throws JsonProcessingException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        RsEvent rsEvent = objectMapper.readValue(rsEventString, RsEvent.class);
-
+    public void addOneRsEvent(@RequestBody RsEvent rsEvent) {
         rsList.add(rsEvent);
     }
 }

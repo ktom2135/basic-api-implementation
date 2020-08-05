@@ -6,11 +6,10 @@ public class RsEvent {
     private String keyWord;
     private String testProp;
 
-    public RsEvent(){
-        int a = 0;
+    public RsEvent() {
     }
 
-    public RsEvent(String eventName, String  keyWord){
+    public RsEvent(String eventName, String keyWord) {
         this.eventName = eventName;
         this.keyWord = keyWord;
     }
@@ -29,9 +28,5 @@ public class RsEvent {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
-    }
-
-    public void convert(){
-
     }
 }
