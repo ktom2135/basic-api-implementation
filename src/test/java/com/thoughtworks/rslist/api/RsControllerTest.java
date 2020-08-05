@@ -83,6 +83,21 @@ class RsControllerTest {
     }
 
     @Test
+    void shouldGetExceptionWhenGetOneEventWithOutRangeIndex() throws Exception {
+        mockMvc.perform(get("/rs/10"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid index")));
+    }
+
+    @Test
+    void shouldGetExceptionWhenAddOneRsEventWithInvalidUser() throws Exception {
+        String requestJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Tom\",\"gender\":\"male\",\"age\":10,\"email\":\"a@b.com\",\"phone\":\"11234567890\",\"vote\":10}}";
+        mockMvc.perform(post("/rs/event").content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
+    }
+
+    @Test
     void shouldAddOneRsEvent() throws Exception {
         String requestJson = "{\"eventName\":\"第四条事件\",\"keyWord\":\"无分类\",\"user\":{\"name\":\"Tom\",\"gender\":\"male\",\"age\":20,\"email\":\"a@b.com\",\"phone\":\"11234567890\",\"vote\":10}}";
         mockMvc.perform(post("/rs/event").content(requestJson).contentType(MediaType.APPLICATION_JSON))

@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -23,13 +25,13 @@ class UserControllerTest {
     MockMvc mockMvc;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         UserController.users.clear();
     }
 
     @Test
     void shouldRegisterUser() throws Exception {
-        User user = new User("Tom", "male", 18,"a@b.com", "11234567890");
+        User user = new User("Tom", "male", 18, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -40,7 +42,7 @@ class UserControllerTest {
 
     @Test
     void nameShouldNotNull() throws Exception {
-        User user = new User(null, "male", 18,"a@b.com", "11234567890");
+        User user = new User(null, "male", 18, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -51,7 +53,7 @@ class UserControllerTest {
     @Test
     void nameShouldNotLongerThan8() throws Exception {
 
-        User user = new User("Tom123456", "male", 18,"a@b.com", "11234567890");
+        User user = new User("Tom123456", "male", 18, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -62,7 +64,7 @@ class UserControllerTest {
     @Test
     void genderShouldNotNull() throws Exception {
 
-        User user = new User("Tom", null, 18,"a@b.com", "11234567890");
+        User user = new User("Tom", null, 18, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -73,7 +75,7 @@ class UserControllerTest {
     @Test
     void ageShouldNotLessThan18() throws Exception {
 
-        User user = new User("Tom", "male", 17,"a@b.com", "11234567890");
+        User user = new User("Tom", "male", 17, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -84,18 +86,19 @@ class UserControllerTest {
     @Test
     void ageShouldNotMoreThan100() throws Exception {
 
-        User user = new User("Tom", "male", 101,"a@b.com", "11234567890");
+        User user = new User("Tom", "male", 101, "a@b.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
         mockMvc.perform(post("/user").content(userJson).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("invalid param")));
     }
 
     @Test
     void emailShouldValid() throws Exception {
 
-        User user = new User("Tom", "male", 18,"ab.com", "11234567890");
+        User user = new User("Tom", "male", 18, "ab.com", "11234567890");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
@@ -106,7 +109,7 @@ class UserControllerTest {
     @Test
     void phoneShouldValid() throws Exception {
 
-        User user = new User("Tom", "male", 18,"a@b.com", "1123456789");
+        User user = new User("Tom", "male", 18, "a@b.com", "1123456789");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String userJson = objectMapper.writeValueAsString(user);
